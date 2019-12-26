@@ -1,3 +1,28 @@
+(function ($) {
+    $.fn.disableSelection = function () {
+        this.css('cursor', 'default');
+        this.css('-webkit-touch-callout', 'none');
+        this.css('-webkit-user-select', 'none');
+        this.css('-khtml-user-select', 'none');
+        this.css('-moz-user-select', 'none');
+        this.css('-ms-user-select', 'none');
+        this.css('user-select', 'none');
+        return this.each(function () {
+            if (typeof this.onselectstart != 'undefined') {
+                this.onselectstart = function () {
+                    return false;
+                };
+            } else if (typeof this.style.MozUserSelect != 'undefined') {
+                this.style.MozUserSelect = 'none';
+            } else {
+                this.onmousedown = function () {
+                    return false;
+                };
+            }
+        });
+    };
+})(jQuery);
+
 let Flake = class {
     color = "#B0E5FF";
     char = `❄️`;
@@ -34,6 +59,7 @@ let Flake = class {
         $(this.html).css('fontSize', this.size + 'px');
         $(this.html).css('color', this.color);
         $(this.html).text(this.char);
+        $(this.html).disableSelection();
     }
 
     spawn = () => {
